@@ -38,8 +38,7 @@
       "http_directory": "http",
       "boot_wait": "2s",
       "boot_command": [
-          "<enter><wait10><wait10>",
-          "/usr/bin/curl http://{{.HTTPIP}}:{{.HTTPPort}}/ssh.sh | /bin/bash<enter>"
+        "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ssh.sh<enter>"
       ]
     }
   ],
