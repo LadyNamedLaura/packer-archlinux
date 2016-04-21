@@ -5,9 +5,9 @@
   "variables": {
     "cloud_token": "{{env `ATLAS_TOKEN`}}",
     "box_version": "{{env `VERSION`}}",
-    "iso_url": "https://archlinux.cu.be/iso/2015.07.01/archlinux-2015.07.01-dual.iso",
-    "iso_checksum": "a025ac8e23131b038a0b7f949faeb04d382e5b25",
-    "iso_checksum_type": "sha1"
+    "iso_url": "/home/bjanssens/Downloads/iso/archlinux-2016.04.01-dual.iso",
+    "iso_checksum": "56fac9b3eefdf254a53e519dfcb05168",
+    "iso_checksum_type": "md5"
   },
   "provisioners": [{
     "type": "shell",
