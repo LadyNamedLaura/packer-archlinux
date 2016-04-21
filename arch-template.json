@@ -1,0 +1,60 @@
+{
+  "push": {
+    "name": "SimonPe/archlinux"
+  },
+  "variables": {
+    "cloud_token": "{{env `ATLAS_TOKEN`}}",
+    "box_version": "{{env `VERSION`}}",
+    "iso_url": "https://archlinux.cu.be/iso/2015.07.01/archlinux-2015.07.01-dual.iso",
+    "iso_checksum": "a025ac8e23131b038a0b7f949faeb04d382e5b25",
+    "iso_checksum_type": "sha1"
+  },
+  "provisioners": [{
+    "type": "shell",
+    "scripts": [
+      "scripts/format.sh",
+      "scripts/bootstrap.sh",
+      "scripts/vagrant.sh",
+      "scripts/cleanup.sh"
+    ]
+  }],
+  "builders": [
+    {
+      "name": "archlinux-kvm",
+      "type": "qemu",
+      "disk_size": 20480,
+      "format": "qcow2",
+      "accelerator": "kvm",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "ssh_username": "root",
+      "ssh_password": "changeme",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "30s",
+      "shutdown_command": "sudo -S poweroff",
+      "http_directory": "http",
+      "boot_wait": "2s",
+      "boot_command": [
+          "<enter><wait10><wait10>",
+          "/usr/bin/curl http://{{.HTTPIP}}:{{.HTTPPort}}/ssh.sh | /bin/bash<enter>"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 1,
+        "output": "archlinux_{{.Provider}}.box"
+      }, {
+        "type": "vagrant-cloud",
+        "box_tag": "SimonPe/archlinux",
+        "version": "{{user `box_version`}}",
+        "access_token": "{{user `cloud_token`}}"
+      }
+    ]
+  ]
+}
