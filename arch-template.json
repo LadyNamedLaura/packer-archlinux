@@ -5,9 +5,9 @@
   "variables": {
     "cloud_token": "{{env `ATLAS_TOKEN`}}",
     "box_version": "{{env `VERSION`}}",
-    "iso_url": "/home/bjanssens/Downloads/iso/archlinux-2016.04.01-dual.iso",
-    "iso_checksum": "56fac9b3eefdf254a53e519dfcb05168",
-    "iso_checksum_type": "md5"
+    "iso_url": "https://archlinux.cu.be/iso/2016.04.01/archlinux-2016.04.01-dual.iso",
+    "iso_checksum": "a0602caf19e90a23372667397578322b99b6593a",
+    "iso_checksum_type": "sha1"
   },
   "provisioners": [{
     "type": "shell",
@@ -78,7 +78,9 @@
       }, {
         "type": "vagrant-cloud",
         "box_tag": "SimonPe/archlinux",
-        "only": "archlinux-kvm",
+        "only": [
+          "archlinux-kvm"
+        ],
         "version": "{{user `box_version`}}",
         "access_token": "{{user `cloud_token`}}"
       }
