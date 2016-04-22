@@ -5,8 +5,8 @@
   "variables": {
     "cloud_token": "{{env `ATLAS_TOKEN`}}",
     "box_version": "{{env `VERSION`}}",
-    "iso_url": "https://archlinux.cu.be/iso/2015.07.01/archlinux-2015.07.01-dual.iso",
-    "iso_checksum": "a025ac8e23131b038a0b7f949faeb04d382e5b25",
+    "iso_url": "https://archlinux.cu.be/iso/2016.04.01/archlinux-2016.04.01-dual.iso",
+    "iso_checksum": "a0602caf19e90a23372667397578322b99b6593a",
     "iso_checksum_type": "sha1"
   },
   "provisioners": [{
@@ -38,8 +38,35 @@
       "http_directory": "http",
       "boot_wait": "2s",
       "boot_command": [
-        "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ssh.sh<enter>"
+        "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/pre-install.sh<enter>"
       ]
+    },
+    {
+      "name": "archlinux-virtualbox",
+      "type": "virtualbox-iso",
+      "headless": true,
+      "guest_os_type": "ArchLinux_64",
+      "iso_url": "/home/bjanssens/Downloads/iso/archlinux-2016.04.01-dual.iso",
+      "iso_checksum": "56fac9b3eefdf254a53e519dfcb05168",
+      "iso_checksum_type": "md5",
+      "boot_command": [
+        "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/pre-install.sh<enter>"
+      ],
+      "boot_wait": "12s",
+      "http_directory": "http",
+      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+      "virtualbox_version_file": "/home/vagrant/.vbox_version",
+      "ssh_username": "root",
+      "ssh_password": "changeme",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "3600s",
+      "ssh_pty" : "true",
+      "disk_size": 10240,
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ],
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now"
     }
   ],
   "post-processors": [
@@ -51,6 +78,9 @@
       }, {
         "type": "vagrant-cloud",
         "box_tag": "SimonPe/archlinux",
+        "only": [
+          "archlinux-kvm"
+        ],
         "version": "{{user `box_version`}}",
         "access_token": "{{user `cloud_token`}}"
       }
