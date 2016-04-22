@@ -40,6 +40,33 @@
       "boot_command": [
         "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ssh.sh<enter>"
       ]
+    },
+    {
+      "name": "archlinux-virtualbox",
+      "type": "virtualbox-iso",
+      "headless": true,
+      "guest_os_type": "ArchLinux_64",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "boot_command": [
+        "<tab> script=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ssh.sh<enter>"
+      ],
+      "shutdown_command": "sudo -S poweroff",
+      "boot_wait": "12s",
+      "http_directory": "http",
+      "guest_additions_path": "VBoxGuestAdditions_{{ .Version }}.iso",
+      "virtualbox_version_file": "/home/vagrant/.vbox_version",
+      "ssh_username": "root",
+      "ssh_password": "changeme",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "3600s",
+      "ssh_pty" : "true",
+      "disk_size": 10240,
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ]
     }
   ],
   "post-processors": [
