@@ -78,6 +78,7 @@
       }, {
         "type": "vagrant-cloud",
         "box_tag": "SimonPe/archlinux",
+        "only": "archlinux-kvm",
         "version": "{{user `box_version`}}",
         "access_token": "{{user `cloud_token`}}"
       }
